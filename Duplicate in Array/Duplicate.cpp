@@ -1,6 +1,10 @@
+#include<iostream>
+#include<vector>
+#include<algorithm>
+
+using namespace std;
 
 class Solution {
-public:
     bool containsDuplicate(vector<int>& nums) {
         
         sort(nums.begin(), nums.end());
@@ -16,3 +20,22 @@ public:
     }
 };
 
+
+int main() {
+
+vector<int> num;
+ 
+ int size;
+
+ cin >> size;
+
+ for(int i = 0; i < size; i++) {
+    cin >> num[i];
+ }
+
+Solution s;
+cout << s.containsDuplicate(num);
+
+
+    return 0;
+}
