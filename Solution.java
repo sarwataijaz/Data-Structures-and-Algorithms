@@ -1,7 +1,10 @@
+import java.util.*;
+
 class Solution {
-    public boolean isPalindrome(String s) {
+
+    public static boolean isPalindrome(String s) {
         
-        String forward = s.replaceAll("[^a-zA-Z0-9]", "");
+        String forward = s.replaceAll("[^a-zA-Z0-9]","");
         String result = forward.toLowerCase();
         String backward = "";
         
@@ -16,5 +19,14 @@ class Solution {
         else {
             return false;
         }
+    }
+
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter a palindrome string: ");
+        String s = sc.nextLine();
+        System.out.println(isPalindrome(s));
     }
 }
