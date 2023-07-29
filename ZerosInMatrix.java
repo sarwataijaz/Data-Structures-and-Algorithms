@@ -12,10 +12,11 @@ public class ZerosInMatrix {
             
                if(matrix[i][j] == 0) {
                 
+                // if we directly assign all elements zero, then the loop will make all the newly assigned zeros row/col also zero
                 for(int k = 0; k < rows; k++) {
                     
                     if(matrix[k][j] != 0) {
-                        matrix[k][j] = -99; 
+                        matrix[k][j] = -99; // set all rows corresponding that zeroth element to a specific value
                     }
                     
                 }
@@ -31,7 +32,7 @@ public class ZerosInMatrix {
                 for(int k = 0; k < cols; k++) {
                     
                     if(matrix[i][k] != 0) {
-                        matrix[i][k] = -99; 
+                        matrix[i][k] = -99; // set all coloumns corresponding that zeroth element to a specific value
                     }
                     
                 }
