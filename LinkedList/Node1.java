@@ -17,7 +17,7 @@ public class Node1 {
         int n = sc.nextInt();
 
         System.out.println(p.data);
-        for(int i=0; i<n; i++) { // p.next-> address of where the node is stored, p.next.data -> valueoo
+        for(int i=0; i<n; i++) { // p.next-> address of where the next node is stored, p.next.data -> value
             p.next = new Node1(22 + (11*i)); // we are setting links to the next nodes
             System.out.println(p.next.data);
             p = p.next; // works in a way -> p++
