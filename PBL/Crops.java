@@ -33,4 +33,8 @@ class CropCountData {
         this.cropName = cropName;
         this.cropCount = cropCount;
     }
+
+    int getCropCount(){
+        return cropCount;
+    }
 }
