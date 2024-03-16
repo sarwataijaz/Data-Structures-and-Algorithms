@@ -1,5 +1,3 @@
-import java.util.LinkedList;
-
 public class Crops {
     private String cropName;
     private String year;
@@ -25,7 +23,7 @@ public class Crops {
     }
 }
 
-class CropCountData {
+class CropCountData implements Comparable<CropCountData> {
 
     private String cropName;
     private int cropCount;
@@ -36,5 +34,14 @@ class CropCountData {
 
     int getCropCount(){
         return cropCount;
+    }
+
+    @Override
+    public int compareTo(CropCountData o) {
+        return Integer.compare(this.cropCount,o.cropCount);
+    }
+
+    public String getData() {
+        return cropName + " " + cropCount;
     }
 }

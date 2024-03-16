@@ -9,6 +9,7 @@ public class States {
     }
     States(String name, Crops crop) {
         stateName = name;
+        crops =  new LinkedList<>();
         crops.add(crop);
     }
 

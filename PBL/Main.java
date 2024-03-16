@@ -1,6 +1,6 @@
-import java.awt.image.CropImageFilter;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Stack;
 
@@ -15,6 +15,7 @@ public class Main {
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
+            boolean firstLine = true;
             boolean firstIteration = true;
             States previousState = null;
 
@@ -22,6 +23,11 @@ public class Main {
                 String[] data = line.split(",");
                 States state;
                 Crops crop = new Crops(data[1], data[2], data[3]);
+
+                if (firstLine) {
+                    firstLine = false;
+                    continue; // Skip the first line
+                }
 
                 if (firstIteration) {
                     state = new States(data[0], crop);
@@ -33,12 +39,25 @@ public class Main {
                         previousState.setCropdata(crop);
                     } else {
                         // as the previous state data has been collected, we need to look for the crop count of it then move forward
-                        LinkedList previousStateCropData = previousState.getCropdata();
+                        LinkedList<Crops> previousStateCropData = previousState.getCropdata();
+
+//                        for(Crops c: previousStateCropData) {
+//                            System.out.println(c.getCropName());
+//                            System.out.println(c.getYear());
+//                        }
+
                         setCropCount(previousStateCropData);
+
                         state = new States(data[0], crop);
                         allStates.add(state);
                         previousState = state;
+
                     }
+                }
+                // Process crop data for the last state
+                if (previousState != null) {
+                    LinkedList<Crops> previousStateCropData = previousState.getCropdata();
+                    setCropCount(previousStateCropData);
                 }
 
             }
@@ -49,38 +68,28 @@ public class Main {
 
     // step 2
     void setCropCount(LinkedList<Crops> cropData) {
-        Crops tempDuplicate = cropData.getFirst();
-        int counter = 0;
+
+
+        String tempDuplicate = cropData.getFirst().getCropName();
+        int counter = 1;
 
         for (int i = 1; i < cropData.size(); i++) {
             Crops crop = cropData.get(i);
-            if(tempDuplicate.equals(crop)) {
+            if(tempDuplicate.equals(crop.getCropName())) {
                 counter++;
             } else {
-                if(cropCount.isEmpty()) {
-                    cropCount.push(new CropCountData(tempDuplicate.getCropName(), counter));
-                } else {
-                    setSequenceOfCrop();
-                }
-                tempDuplicate = crop;
-                counter = 0;
+                cropCount.push(new CropCountData(tempDuplicate, counter));
+                tempDuplicate = crop.getCropName();
+                counter = 1;
             }
         }
+
     }
 
-    //step 2
-    void setSequenceOfCrop() {
-//      int highCount = cropCount.firstElement().getCropCount();
-//
-//      for(CropCountData data : cropCount) {
-//          if(highCount<data.getCropCount()) {
-//              cropCount.peek();
-//          }
-//      }
-    }
 
     public static void main(String[] args) {
-
+        Main main = new Main();
+        main.storingStates();
     }
 
 }
