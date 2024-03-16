@@ -41,10 +41,9 @@ public class Main {
                         // as the previous state data has been collected, we need to look for the crop count of it then move forward
                         LinkedList<Crops> previousStateCropData = previousState.getCropdata();
 
-//                        for(Crops c: previousStateCropData) {
-//                            System.out.println(c.getCropName());
-//                            System.out.println(c.getYear());
-//                        }
+                        for(Crops c: previousStateCropData) {
+                            System.out.println(c.getCropName()+" "+c.getYear());
+                        }
 
                         setCropCount(previousStateCropData);
 
@@ -53,11 +52,6 @@ public class Main {
                         previousState = state;
 
                     }
-                }
-                // Process crop data for the last state
-                if (previousState != null) {
-                    LinkedList<Crops> previousStateCropData = previousState.getCropdata();
-                    setCropCount(previousStateCropData);
                 }
 
             }
@@ -69,20 +63,22 @@ public class Main {
     // step 2
     void setCropCount(LinkedList<Crops> cropData) {
 
-
-        String tempDuplicate = cropData.getFirst().getCropName();
-        int counter = 1;
-
-        for (int i = 1; i < cropData.size(); i++) {
-            Crops crop = cropData.get(i);
-            if(tempDuplicate.equals(crop.getCropName())) {
-                counter++;
-            } else {
-                cropCount.push(new CropCountData(tempDuplicate, counter));
-                tempDuplicate = crop.getCropName();
-                counter = 1;
-            }
+        for(Crops c: cropData) {
+            System.out.println(c.getCropName()+" "+c.getYear());
         }
+//        String tempDuplicate = cropData.getFirst().getCropName();
+//        int counter = 1;
+//
+//        for (int i = 1; i < cropData.size(); i++) {
+//            Crops crop = cropData.get(i);
+//            if(tempDuplicate.equals(crop.getCropName())) {
+//                counter++;
+//            } else {
+//                cropCount.push(new CropCountData(tempDuplicate, counter));
+//                tempDuplicate = crop.getCropName();
+//                counter = 1;
+//            }
+//        }
 
     }
 
