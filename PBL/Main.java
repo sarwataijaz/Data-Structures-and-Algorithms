@@ -41,10 +41,6 @@ public class Main {
                         // as the previous state data has been collected, we need to look for the crop count of it then move forward
                         LinkedList<Crops> previousStateCropData = previousState.getCropdata();
 
-                        for(Crops c: previousStateCropData) {
-                            System.out.println(c.getCropName()+" "+c.getYear());
-                        }
-
                         setCropCount(previousStateCropData);
 
                         state = new States(data[0], crop);
@@ -63,22 +59,31 @@ public class Main {
     // step 2
     void setCropCount(LinkedList<Crops> cropData) {
 
-        for(Crops c: cropData) {
-            System.out.println(c.getCropName()+" "+c.getYear());
+
+        String tempDuplicate = cropData.getFirst().getCropName();
+
+        int counter = 1;
+
+        for (int i = 1; i < cropData.size(); i++) {
+            Crops crop = cropData.get(i);
+            if(tempDuplicate.equals(crop.getCropName())) {
+                counter++;
+            } else {
+                cropCount.push(new CropCountData(tempDuplicate, counter));
+                tempDuplicate = crop.getCropName();
+                counter = 1;
+            }
         }
-//        String tempDuplicate = cropData.getFirst().getCropName();
-//        int counter = 1;
-//
-//        for (int i = 1; i < cropData.size(); i++) {
-//            Crops crop = cropData.get(i);
-//            if(tempDuplicate.equals(crop.getCropName())) {
-//                counter++;
-//            } else {
-//                cropCount.push(new CropCountData(tempDuplicate, counter));
-//                tempDuplicate = crop.getCropName();
-//                counter = 1;
-//            }
+
+//        for(CropCountData c: cropCount) {
+//            System.out.println(c.getData()+" ");
 //        }
+
+        Collections.sort(cropCount);
+
+        for(CropCountData c: cropCount) {
+            System.out.println(c.getData()+" ");
+        }
 
     }
 

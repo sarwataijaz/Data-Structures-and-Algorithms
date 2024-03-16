@@ -23,7 +23,7 @@ public class Crops {
     }
 }
 
-class CropCountData {
+class CropCountData implements Comparable<CropCountData> {
 
     private String cropName;
     private int cropCount;
@@ -36,10 +36,10 @@ class CropCountData {
         return cropCount;
     }
 
-//    @Override
-//    public int compareTo(CropCountData o) {
-//        return Integer.compare(this.cropCount,o.cropCount);
-//    }
+    @Override
+    public int compareTo(CropCountData o) {
+        return Integer.compare(this.cropCount,o.cropCount);
+    }
 
     public String getData() {
         return cropName + " " + cropCount;
