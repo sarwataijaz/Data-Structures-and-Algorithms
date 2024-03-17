@@ -51,6 +51,8 @@ public class Main {
                 }
 
             }
+
+            sortStackData();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -69,23 +71,40 @@ public class Main {
             if(tempDuplicate.equals(crop.getCropName())) {
                 counter++;
             } else {
-                cropCount.push(new CropCountData(tempDuplicate, counter));
-                tempDuplicate = crop.getCropName();
-                counter = 1;
+                if(counter!=1) {
+                    cropCount.push(new CropCountData(tempDuplicate, counter));
+                    tempDuplicate = crop.getCropName();
+                    counter = 1;
+                }
             }
         }
 
-//        for(CropCountData c: cropCount) {
-//            System.out.println(c.getData()+" ");
-//        }
+    }
 
-        Collections.sort(cropCount);
+    void sortStackData() {
+        Stack<CropCountData> tempStack = new Stack<>();
 
-        for(CropCountData c: cropCount) {
-            System.out.println(c.getData()+" ");
+        while (!cropCount.isEmpty()) {
+            CropCountData temp = cropCount.pop();
+
+            // Move elements from the original stack to the temporary stack
+            while (!tempStack.isEmpty() && tempStack.peek().compareTo(temp) > 0) {
+                cropCount.push(tempStack.pop());
+            }
+            tempStack.push(temp);
         }
 
+        // Move elements back from the temporary stack to the original stack
+        while (!tempStack.isEmpty()) {
+            cropCount.push(tempStack.pop());
+        }
+
+        // Print the top element after sorting
+        if (!cropCount.isEmpty()) {
+            System.out.println(cropCount.peek().getData());
+        }
     }
+
 
 
     public static void main(String[] args) {
