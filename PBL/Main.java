@@ -1,14 +1,15 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.Stack;
+import java.util.*;
 
 public class Main {
 
     String filePath = "D:\\JAVAA\\uni\\Sir Mohsin Project\\India Agriculture Crop Production.csv";
     LinkedList<States> allStates = new LinkedList<>();
     Stack<CropCountData> cropCount = new Stack<>();
+    LinkedListQueue<CropYearData> oneStateData = new LinkedListQueue();
+    String stateName = "Andhra Pradesh";
+
 
     // step 1
     public void storingStates() {
@@ -43,6 +44,11 @@ public class Main {
 
                         setCropCount(previousStateCropData);
 
+                        if(previousState.getStateName().equals(stateName)) {
+                            // the whole crop data of Andra Pradesh state being passed
+                            addQueueData(previousStateCropData);
+                        }
+
                         state = new States(data[0], crop);
                         allStates.add(state);
                         previousState = state;
@@ -51,8 +57,6 @@ public class Main {
                 }
 
             }
-
-            sortStackData();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -68,10 +72,10 @@ public class Main {
 
         for (int i = 1; i < cropData.size(); i++) {
             Crops crop = cropData.get(i);
-            if(tempDuplicate.equals(crop.getCropName())) {
+            if (tempDuplicate.equals(crop.getCropName())) {
                 counter++;
             } else {
-                if(counter!=1) {
+                if (counter != 1) {
                     cropCount.push(new CropCountData(tempDuplicate, counter));
                     tempDuplicate = crop.getCropName();
                     counter = 1;
@@ -79,8 +83,11 @@ public class Main {
             }
         }
 
+        sortStackData();
+
     }
 
+    // step 2
     void sortStackData() {
         Stack<CropCountData> tempStack = new Stack<>();
 
@@ -99,17 +106,45 @@ public class Main {
             cropCount.push(tempStack.pop());
         }
 
-        // Print the top element after sorting
-        if (!cropCount.isEmpty()) {
-            System.out.println(cropCount.peek().getData());
+    }
+
+    // step 3
+    void addQueueData(LinkedList<Crops> cropData) {
+        String year = cropData.getFirst().getYear();
+
+        for(int i = 0; i < cropData.size(); i++) {
+            if(!year.equals(cropData.get(i).getYear()) || i==0) {
+                CropYearData yearData = new CropYearData(year);
+                year = cropData.get(i).getYear();
+
+                for(int j = i; j<cropData.size(); j++) {
+                    if(year.equals(cropData.get(j).getYear())) {
+                        yearData.addCropdata(cropData.get(j));
+                    }
+                }
+                oneStateData.add(yearData);
+            }
         }
+
+//        while (oneStateData.getSize() > 0) {
+//            CropYearData temp = oneStateData.first();
+//            System.out.println("Year: " + temp.getYear());
+//            LinkedList<Crops> ll = temp.getCropData();
+//            for (int j = 0; j < ll.size(); j++) {
+//                System.out.println(ll.get(j).getCropName());
+//            }
+//            System.out.println();
+//            oneStateData.remove();
+//        }
+
+
     }
 
 
+        public static void main (String[]args){
+            Main main = new Main();
+            main.storingStates();
+        }
 
-    public static void main(String[] args) {
-        Main main = new Main();
-        main.storingStates();
     }
 
-}
