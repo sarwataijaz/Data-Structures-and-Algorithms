@@ -25,8 +25,13 @@ public class LinkedListQueue<T> implements Queue<T> {
 
     @Override
     public void add(T obj) {
-        head.prev.next = new Node<>(obj, head.prev, head);
-        head.prev = head.prev.next;
+        if (size == 0) {
+            head.prev = new Node<>(obj, head, head);
+            head.next = head.prev;
+        } else {
+            head.prev.next = new Node<>(obj, head.prev, head);
+            head.prev = head.prev.next;
+        }
         size++;
     }
 

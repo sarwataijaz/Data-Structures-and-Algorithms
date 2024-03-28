@@ -110,19 +110,21 @@ public class Main {
 
     // step 3
     void addQueueData(LinkedList<Crops> cropData) {
-        String year = cropData.getFirst().getYear();
+        Set<String> year = new HashSet<>();
+        year.add(cropData.getFirst().getYear());
 
         for(int i = 0; i < cropData.size(); i++) {
-            if(!year.equals(cropData.get(i).getYear()) || i==0) {
-                CropYearData yearData = new CropYearData(year);
-                year = cropData.get(i).getYear();
+            if(!year.contains(cropData.get(i).getYear()) || i==0) {
+                String tempYear = cropData.get(i).getYear();
+                CropYearData yearData = new CropYearData(tempYear);
 
                 for(int j = i; j<cropData.size(); j++) {
-                    if(year.equals(cropData.get(j).getYear())) {
+                    if(tempYear.equals(cropData.get(j).getYear())) {
                         yearData.addCropdata(cropData.get(j));
                     }
                 }
                 oneStateData.add(yearData);
+                year.add(cropData.get(i).getYear());
             }
         }
 
