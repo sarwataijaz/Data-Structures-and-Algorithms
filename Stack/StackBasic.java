@@ -1,33 +1,31 @@
 // stack implementation using Arrays.
 interface Stack {
+    public int getSize();
     public Object peek();
     public void push(Object obj);
     public Object pop();
-    public int getSize();
 }
-public class StackBasic implements Stack {
-
+public class StackBasic<T> {
     Object[] arr;
     public int size = 0;
     StackBasic(int capacity) {
         arr = new Object[capacity];
     }
-    @Override
-    public Object peek() {
+    public T peek() {
        if(size == 0) { // thru size variable we can track how many elements have been stored in a stack
            throw new IllegalStateException("Stack is empty.");
        }
 
-       return arr[size-1];
+       return (T)arr[size-1];
     }
 
-    @Override
-    public void push(Object obj) {
+    public void push(T obj) {
 
         if(size == arr.length) {
             resize();
         }
         arr[size++] = obj;
+
     }
 
     public void resize() {
@@ -38,17 +36,29 @@ public class StackBasic implements Stack {
     private boolean isEmpty() {
         return(size==0);
     }
-    @Override
-    public Object pop() {
+
+    public T pop() {
         if(size == 0) { // thru size variable we can track how many elements have been stored in a stack
             throw new IllegalStateException("Stack is empty.");
         }
         Object temp = arr[--size];
         arr[size] = null;
-        return temp; // return the deleted element.
+        return (T)temp; // return the deleted element.
     }
 
-    @Override
+    public boolean search(T value) {
+        for(int i=0; i<size; i++) {
+            if(arr[i] == value)
+                return true;
+        }
+        return false;
+    }
+    public void display() {
+        for(int i=0; i<size; i++) {
+            System.out.println(arr[i]);
+        }
+    }
+
     public int getSize() {
         return size;
     }
@@ -58,17 +68,13 @@ public class StackBasic implements Stack {
     }
 
     public static void main(String[] args) {
-        StackBasic coldrink = new StackBasic(3);
+        StackBasic<String> coldrink = new StackBasic(3);
         coldrink.push("Pepsi");
         coldrink.push("Marinda");
         coldrink.push("Dew");
         coldrink.push("colacola");
         coldrink.push("fanta");
 
-//        while(coldrink.getSize() > 0) {
-//            System.out.println(coldrink.peek());
-//            coldrink.pop();
-//        }
 
         StackBasic fruits = new StackBasic(3);
         coldrink.push("Strawberry");
@@ -77,8 +83,9 @@ public class StackBasic implements Stack {
         coldrink.push("Apple");
         coldrink.push("Orange");
 
-     method1(coldrink,fruits);
-     method2(coldrink,fruits);
+//     method1(coldrink,fruits);
+//     method2(coldrink,fruits);
+        mergeStack(coldrink,fruits);
 
     }
 
@@ -105,5 +112,12 @@ public class StackBasic implements Stack {
             System.out.println(coldrink.peek());
             coldrink.pop();
         }
+    }
+
+    public static void mergeStack(StackBasic coldrink, StackBasic fruits) {
+        for(int i=0; i< fruits.getSize(); i++) {
+            coldrink.push(fruits.pop());
+        }
+        coldrink.display();
     }
 }
