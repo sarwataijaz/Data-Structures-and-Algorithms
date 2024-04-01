@@ -54,5 +54,42 @@ public class BinaryTree {
             sb.append(right.InOrder()+" ");
         return sb+" ";
     }
+
+    public int size() {
+        int count = 1; // as the root exists
+        if(left!=null) {
+            count+=left.size();
+        }
+        if(right!=null) {
+            count+=right.size();
+        }
+        return count;
+    }
+
+    public boolean isLeaf() {
+        return (left==null && right==null);
+    }
+
+    public int height() {
+        int leftH=0, rightH=0;
+        if(left!=null) {
+            leftH = left.height();
+        }
+        if(right!=null) {
+            rightH = right.height();
+        }
+        return Math.max(leftH,rightH)+1;
+    }
+
+    public boolean search(Object obj) {
+        if(root == obj)
+            return true;
+        boolean found = false;
+        if(left!=null)
+            found = left.search(obj);
+        if(!found && right!=null)
+            found = right.search(obj);
+        return found;
+    }
 }
 

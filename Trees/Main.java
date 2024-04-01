@@ -10,5 +10,7 @@ public class Main {
         System.out.println(A.InOrder());
         System.out.println(A.getLeft().InOrder());
         System.out.println(A.getRight().InOrder());
+        System.out.println(A.height());
+        System.out.println(A.search("C"));
     }
 }
