@@ -44,7 +44,7 @@ public class Main {
 
                         setCropCount(previousStateCropData);
 
-                        if(previousState.getStateName().equals(stateName)) {
+                        if (previousState.getStateName().equals(stateName)) {
                             // the whole crop data of Andra Pradesh state being passed
                             addQueueData(previousStateCropData);
                         }
@@ -62,6 +62,7 @@ public class Main {
         }
     }
 
+
     // step 2
     void setCropCount(LinkedList<Crops> cropData) {
 
@@ -75,11 +76,10 @@ public class Main {
             if (tempDuplicate.equals(crop.getCropName())) {
                 counter++;
             } else {
-                if (counter != 1) {
                     cropCount.push(new CropCountData(tempDuplicate, counter));
                     tempDuplicate = crop.getCropName();
                     counter = 1;
-                }
+
             }
         }
 
@@ -87,8 +87,10 @@ public class Main {
 
     }
 
+
     // step 2
     void sortStackData() {
+
         Stack<CropCountData> tempStack = new Stack<>();
 
         while (!cropCount.isEmpty()) {
@@ -105,47 +107,147 @@ public class Main {
         while (!tempStack.isEmpty()) {
             cropCount.push(tempStack.pop());
         }
-
     }
 
     // step 3
     void addQueueData(LinkedList<Crops> cropData) {
-        Set<String> year = new HashSet<>();
-        year.add(cropData.getFirst().getYear());
+        Set<String> yearSet = new HashSet<>();
 
-        for(int i = 0; i < cropData.size(); i++) {
-            if(!year.contains(cropData.get(i).getYear()) || i==0) {
-                String tempYear = cropData.get(i).getYear();
-                CropYearData yearData = new CropYearData(tempYear);
+        for (int i = 0; i < cropData.size(); i++) {
+            String year = cropData.get(i).getYear();
 
-                for(int j = i; j<cropData.size(); j++) {
-                    if(tempYear.equals(cropData.get(j).getYear())) {
+            if (!yearSet.contains(year)) {
+                CropYearData yearData = new CropYearData(year);
+
+                for (int j = i; j < cropData.size(); j++) {
+                    if (year.equals(cropData.get(j).getYear())) {
                         yearData.addCropdata(cropData.get(j));
                     }
                 }
                 oneStateData.add(yearData);
-                year.add(cropData.get(i).getYear());
+                yearSet.add(year);
             }
         }
-
-//        while (oneStateData.getSize() > 0) {
-//            CropYearData temp = oneStateData.first();
-//            System.out.println("Year: " + temp.getYear());
-//            LinkedList<Crops> ll = temp.getCropData();
-//            for (int j = 0; j < ll.size(); j++) {
-//                System.out.println(ll.get(j).getCropName());
-//            }
-//            System.out.println();
-//            oneStateData.remove();
-//        }
-
 
     }
 
 
-        public static void main (String[]args){
+    // problem 1
+    void popularCropInParticularYear(String year) {
+
+        Map<String, Integer> cropCounts = new HashMap<>();
+
+        // Iterate over all states and their crop data
+        for (States state : allStates) {
+            LinkedList<Crops> cropData = state.getCropdata();
+            for (Crops crop : cropData) {
+                if (crop.getYear().equals(year)) {
+                    String cropName = crop.getCropName();
+                    cropCounts.put(cropName, cropCounts.getOrDefault(cropName, 0) + 1);
+                }
+            }
+        }
+
+        // Find the popular crop(s) with the highest count
+        LinkedList<String> popularCrops = new LinkedList<>();
+        int maxCount = 0;
+        for (Map.Entry<String, Integer> entry : cropCounts.entrySet()) {
+            int count = entry.getValue();
+            if (count > maxCount) {
+                popularCrops.clear(); // Clear previous popular crops
+                popularCrops.add(entry.getKey());
+                maxCount = count;
+            } else if (count == maxCount) {
+                popularCrops.add(entry.getKey());
+            }
+        }
+
+        if (!popularCrops.isEmpty()) {
+            System.out.println("Popular crop in " + year + ": " + popularCrops + "-> Count: " + maxCount);
+        } else {
+            System.out.println("No crop data available for the year " + year);
+        }
+
+    }
+
+    // problem 2
+    void getStatePopularityForCrops() {
+        for (States state : allStates) {
+            String stateName = state.getStateName();
+            CropCountData highestCountCrop = state.getHighestCountCrop();
+
+            // Print the highest count crop for the current state
+            System.out.println("The most popular crop for " + stateName + " is: " + highestCountCrop.getCropName());
+        }
+    }
+
+    // problem 3
+
+    void getRecentCropOfAndraPradesh() {
+        if (oneStateData.getSize() == 0) {
+            System.out.println("Queue is empty.");
+            return;
+        }
+
+        String recentYear = oneStateData.first().getYear();
+        CropYearData recent = oneStateData.first();
+
+        // Find the most recent year
+        for (int i = 1; i < oneStateData.getSize(); i++) {
+            CropYearData current = oneStateData.first();
+            String currentYear = current.getYear();
+            if (currentYear.compareTo(recentYear) > 0) {
+                recentYear = currentYear;
+                recent = current;
+            }
+            oneStateData.add(oneStateData.remove()); // Move the current element to the end of the queue
+        }
+
+        LinkedList<Crops> crops = recent.getCropData();
+        System.out.println("The most recent crop of Andhra Pradesh is:");
+        for (Crops crop : crops) {
+            System.out.println(crop.getCropName());
+        }
+    }
+
+    void getOldestCropOfAndraPradesh() {
+        if (oneStateData.getSize() == 0) {
+            System.out.println("Queue is empty.");
+            return;
+        }
+
+        String oldestYear = oneStateData.first().getYear();
+        CropYearData oldest = oneStateData.first();
+
+        // Find the oldest year
+        for (int i = 1; i < oneStateData.getSize(); i++) {
+            CropYearData current = oneStateData.first();
+            String currentYear = current.getYear();
+            if (currentYear.compareTo(oldestYear) < 0) {
+                oldestYear = currentYear;
+                oldest = current;
+            }
+            oneStateData.add(oneStateData.remove()); // Move the current element to the end of the queue
+        }
+
+        LinkedList<Crops> oldestCrops = oldest.getCropData();
+        System.out.println("The oldest crop of Andhra Pradesh is:");
+        for (Crops crop : oldestCrops) {
+            System.out.println(crop.getCropName());
+        }
+    }
+
+
+
+    public static void main (String[]args){
             Main main = new Main();
+
             main.storingStates();
+
+            main.popularCropInParticularYear("2001-02");
+            main.getOldestCropOfAndraPradesh();
+            main.getRecentCropOfAndraPradesh();
+            main.getStatePopularityForCrops();
         }
 
     }

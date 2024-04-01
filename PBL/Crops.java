@@ -5,17 +5,13 @@ public class Crops {
     private String year;
     private String district;
     private int size=0;
+    int cropCount;
 
     Crops(String district,String cropName, String year) {
         this.cropName = cropName;
         this.year = year;
         this.district = district;
         size++;
-    }
-
-    Crops(String cropName, String year) {
-        this.cropName = cropName;
-        this.year = year;
     }
 
     String getCropName() {
@@ -28,12 +24,19 @@ public class Crops {
     int getSize() {
         return size;
     }
+    int getCropCount() {
+        return cropCount;
+    }
+
+    void increaseCount() {
+        cropCount++;
+    }
 }
 
 class CropCountData implements Comparable<CropCountData> {
 
     private String cropName;
-    private int cropCount;
+    public int cropCount;
     CropCountData(String cropName, int cropCount) {
         this.cropName = cropName;
         this.cropCount = cropCount;
@@ -42,6 +45,8 @@ class CropCountData implements Comparable<CropCountData> {
     int getCropCount(){
         return cropCount;
     }
+
+    String getCropName() { return cropName; }
 
     @Override
     public int compareTo(CropCountData o) {
@@ -54,17 +59,20 @@ class CropCountData implements Comparable<CropCountData> {
 }
 
 class CropYearData {
+    int cropCount;
     String year;
     LinkedList<Crops> cropData;
 
     CropYearData(String year) {
         this.year = year;
         cropData = new LinkedList<>();
+        cropCount = 0; // Initialize crop count to 0
     }
 
     void addCropdata(Crops crop) {
         cropData.add(crop);
     }
+
     String getYear() {
         return year;
     }
@@ -72,4 +80,5 @@ class CropYearData {
     LinkedList<Crops> getCropData() {
         return cropData;
     }
+
 }

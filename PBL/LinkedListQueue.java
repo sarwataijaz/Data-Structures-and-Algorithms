@@ -9,7 +9,7 @@ interface Queue<T> {
 
 public class LinkedListQueue<T> implements Queue<T> {
     private int size = 0;
-    private Node<T> head = new Node<>(null);
+    public Node<T> head = new Node<>(null);
 
     @Override
     public T remove() {
@@ -55,7 +55,8 @@ public class LinkedListQueue<T> implements Queue<T> {
         return head.prev.data;
     }
 
-    private static class Node<T> {
+
+    public static class Node<T> {
         T data;
         Node<T> next;
         Node<T> prev;
