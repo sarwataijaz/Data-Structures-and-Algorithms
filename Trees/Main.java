@@ -13,10 +13,10 @@ public class Main {
 //        System.out.println(A.height());
 //        System.out.println(A.search("C"));
 
-        BST four = new BST(4);
         BST two = new BST(2);
-        BST five = new BST(1);
-        System.out.println(four.setLeft(two));
-        System.out.println(four.setLeft(five));
+        BST six = new BST(6);
+        BST four = new BST(4,two,six);
+//        System.out.println(four.setLeft(two));
+//        System.out.println(four.setLeft(six));
     }
 }
