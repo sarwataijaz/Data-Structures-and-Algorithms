@@ -1,5 +1,3 @@
-import java.util.HashMap;
-
 interface Map {
     public int size();
     public Object get(Object key);
